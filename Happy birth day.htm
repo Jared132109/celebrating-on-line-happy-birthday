@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Amaan's Birthday Celebration</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: #fff;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+    }
+    h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: #ffd700;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+    }
+    p {
+      font-size: 1.5em;
+      margin-top: 10px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #fff;
+      animation: fall 5s linear infinite;
+    }
+    @keyframes fall {
+      0% {transform: translateY(-100vh) rotate(0deg);}
+      100% {transform: translateY(100vh) rotate(360deg);}
+    }
+    /* Balloons */
+    .balloon {
+      position: absolute;
+      bottom: -150px;
+      width: 60px;
+      height: 80px;
+      background: red;
+      border-radius: 50% 50% 50% 50%;
+      animation: floatUp 10s ease-in-out infinite;
+    }
+    @keyframes floatUp {
+      0% {transform: translateY(0);}
+      100% {transform: translateY(-120vh);}
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 Come Celebrate Amaan's Birthday 🎉</h1>
+  <h2>📅 Date: 30 May</h2>
+  <p>📞 Contact: 03663357296</p>
+
+  <!-- Confetti elements -->
+  <div class="confetti" style="left:10%; background:#ff4081;"></div>
+  <div class="confetti" style="left:30%; background:#ffd700;"></div>
+  <div class="confetti" style="left:50%; background:#00e5ff;"></div>
+  <div class="confetti" style="left:70%; background:#76ff03;"></div>
+  <div class="confetti" style="left:90%; background:#ff9100;"></div>
+
+  <!-- Balloons -->
+  <div class="balloon" style="left:20%; background:#ff4081;"></div>
+  <div class="balloon" style="left:50%; background:#00e5ff;"></div>
+  <div class="balloon" style="left:80%; background:#ffd700;"></div>
+
+  <script>
+    function playSong() {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = [
+        {freq: 264, duration: 400}, {freq: 264, duration: 400},
+        {freq: 297, duration: 800}, {freq: 264, duration: 800},
+        {freq: 352, duration: 800}, {freq: 330, duration: 1600},
+        {freq: 264, duration: 400}, {freq: 264, duration: 400},
+        {freq: 297, duration: 800}, {freq: 264, duration: 800},
+        {freq: 396, duration: 800}, {freq: 352, duration: 1600},
+        {freq: 264, duration: 400}, {freq: 264, duration: 400},
+        {freq: 528, duration: 800}, {freq: 440, duration: 800},
+        {freq: 352, duration: 800}, {freq: 330, duration: 800},
+        {freq: 297, duration: 800},
+        {freq: 466, duration: 400}, {freq: 466, duration: 400},
+        {freq: 440, duration: 800}, {freq: 352, duration: 800},
+        {freq: 396, duration: 800}, {freq: 352, duration: 1600}
+      ];
+
+      let time = audioCtx.currentTime;
+      let totalDuration = 0;
+
+      notes.forEach(note => {
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(note.freq, time);
+        gainNode.gain.setValueAtTime(0.2, time);
+
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        osc.start(time);
+        osc.stop(time + note.duration / 1000);
+        time += note.duration / 1000;
+        totalDuration += note.duration;
+      });
+
+      // Loop after song finishes
+      setTimeout(playSong, totalDuration);
+    }
+
+    // Start automatically when page loads
+    window.onload = playSong;
+  </script>
+</body>
+</html>
